@@ -1,11 +1,12 @@
-import React from 'react';
-import Board from './components/Board';
+import React from "react";
+import Board from "./components/Board";
+import { ColumnProvider } from "./contexts/ColumnContext";
 
 function App() {
   return (
-    <div>
+    <ColumnProvider>
       <Board />
-    </div>
+    </ColumnProvider>
   );
 }
 

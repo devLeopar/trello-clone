@@ -1,26 +1,30 @@
 import React from "react";
-import { Card as CardType } from "../../types";
-import Card from "../Card";
-import styles from "./styles.module.css";
+import { useColumnContext } from "../../contexts/ColumnContext";
+import styles from "./styles.module.css"
 
-type ColumnProps = {
-  title: string;
-  cards?: CardType[];
-};
+const Column = ({ id, title }: { id: string; title: string }) => {
+  const { dispatch } = useColumnContext();
 
-const Column: React.FC<ColumnProps> = ({ title, cards = [] }) => {
+  const handleDelete = () => {
+    dispatch({ type: "DELETE_COLUMN", payload: id });
+  };
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch({ type: "EDIT_COLUMN", payload: { id, title: e.target.value } });
+  };
+
   return (
     <div className={styles.column}>
-      <h3>{title}</h3>
-      <div className={styles.cards}>
-        {cards.map((card) => (
-          <Card
-            key={card.id}
-            title={card.title}
-            description={card.description}
-          />
-        ))}
+      <div className={styles.columnHeader}>
+        <input
+          type="text"
+          placeholder="Enter title..."
+          value={title}
+          onChange={handleTitleChange}
+        />
+        <button onClick={handleDelete}>X</button>
       </div>
+      <div className={styles.columnContent}></div>
     </div>
   );
 };

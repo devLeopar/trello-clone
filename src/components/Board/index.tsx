@@ -1,16 +1,21 @@
-import React from 'react';
-import { cards } from '../../models/cards';
-import Column from '../Column';
-import styles from './styles.module.css';
+import React from "react";
+import { useColumnContext } from "../../contexts/ColumnContext";
+import Column from "../Column";
+import ColumnForm from "./ColumnForm";
+import styles from "./styles.module.css"
 
-const Board: React.FC = () => {
-    return (
-      <div className={styles.board}>
-        <Column title='Backlog' cards={cards} />
-        <Column title='Sprint' cards={cards} />
-        <Column title='Done' cards={cards} />
-      </div>
-    );
-  };
+const Board = () => {
+  const { state } = useColumnContext();
+
+  return (
+    <div className={styles.board}>
+      <h2>Columns</h2>
+      <ColumnForm />
+      {state.columns.map((column) => (
+        <Column key={column.id} {...column} />
+      ))}
+    </div>
+  );
+};
 
 export default Board;
