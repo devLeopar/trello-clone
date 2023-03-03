@@ -1,0 +1,20 @@
+.column {
+  background-color: #f4f5f7;
+  border-radius: 4px;
+  display: inline-block;
+  margin-right: 16px;
+  padding: 8px;
+  vertical-align: top;
+  width: 272px;
+}
+
+.column h3 {
+  color: #172b4d;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.column .cards {
+  margin-top: 8px;
+}
