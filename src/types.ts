@@ -4,8 +4,8 @@ export type Card = {
   description: string;
 };
 
-export type Column = {
+export type ColumnData = {
   id: string;
   title: string;
-  cards: Card[];
+  cards?: Card[];
 };

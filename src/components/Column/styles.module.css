@@ -1,37 +1,76 @@
 .column {
-  background-color: #e2e2e2;
-  width: 250px;
-  margin-right: 20px;
+  width: 272px;
+  margin-right: 8px;
+  border-radius: 3px;
+  background-color: #ebecf0;
+  padding: 8px;
 }
-
-.columnHeader {
+.editPaneWrapper {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-around;
   align-items: center;
-  padding: 10px;
-  background-color: #fff;
 }
 
-.columnHeader input {
-  width: 100%;
-  border: none;
-  font-size: 20px;
-  font-weight: bold;
-  text-align: center;
-  background-color: transparent;
-  outline: none;
+.editButton {
+  color: green;
+  cursor: pointer;
+  font-style: italic;
 }
 
-.columnHeader button {
-  border: none;
-  background-color: transparent;
+.deleteButton {
   color: red;
-  font-size: 20px;
+  margin-left: 10px;
+  cursor: pointer;
+  font-style: italic;
+}
+
+.titleInput {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 16px;
+  margin-right: 8px;
+  margin-bottom: 10px;
+}
+
+.editPaneButtons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.saveButton {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 16px;
   cursor: pointer;
 }
 
-.columnContent {
-  padding: 10px;
-  height: calc(100vh - 150px);
-  overflow-y: auto;
+.cancelButton {
+  background-color: #f44336;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
 }
