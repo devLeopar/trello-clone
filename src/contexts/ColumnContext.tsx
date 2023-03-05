@@ -21,9 +21,16 @@ type ColumnContextValue = {
   dispatch: React.Dispatch<ColumnAction>;
 };
 
-const ColumnContext = createContext<ColumnContextValue | undefined>(undefined);
+export const defaultState = {
+  columns: [],
+  showAddColumnForm: false,
+};
 
-const columnReducer = (
+export const ColumnContext = createContext<ColumnContextValue | undefined>(
+  undefined
+);
+
+export const columnReducer = (
   state: ColumnState,
   action: ColumnAction
 ): ColumnState => {
@@ -56,14 +63,11 @@ const columnReducer = (
   }
 };
 
-const ColumnProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const [state, dispatch] = useReducer(columnReducer, {
-    columns: [],
-    showAddColumnForm: false,
-  });
-
+const ColumnProvider: React.FC<{
+  children: React.ReactNode;
+  initialState: any;
+}> = ({ children, initialState }) => {
+  const [state, dispatch] = useReducer(columnReducer, initialState);
   return (
     <ColumnContext.Provider value={{ state, dispatch }}>
       {children}

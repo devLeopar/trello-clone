@@ -36,11 +36,12 @@ const Column: React.FC<ColumnProps> = ({ column, onDelete, onEdit }) => {
   };
 
   return (
-    <div className={styles.column}>
+    <div data-testid={`column-${column.id}`} className={styles.column}>
       {isEditing ? (
         <>
           <div className={styles.editPaneWrapper}>
             <input
+              data-testid={`editInput-${column.id}`}
               type="text"
               value={title}
               onChange={handleTitleChange}
@@ -61,10 +62,18 @@ const Column: React.FC<ColumnProps> = ({ column, onDelete, onEdit }) => {
           <div className={styles.header}>
             <h3 className={styles.title}>{column.title}</h3>
             <div>
-              <span className={styles.editButton} onClick={handleEdit}>
+              <span
+                data-testid={`edit-button-${column.id}`}
+                className={styles.editButton}
+                onClick={handleEdit}
+              >
                 Edit
               </span>
-              <span className={styles.deleteButton} onClick={handleDelete}>
+              <span
+                data-testid={`delete-button-${column.id}`}
+                className={styles.deleteButton}
+                onClick={handleDelete}
+              >
                 Delete
               </span>
             </div>

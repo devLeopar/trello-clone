@@ -1,10 +1,10 @@
 import React from "react";
 import Board from "./components/Board";
-import { ColumnProvider } from "./contexts/ColumnContext";
+import { ColumnProvider, defaultState } from "./contexts/ColumnContext";
 
 function App() {
   return (
-    <ColumnProvider>
+    <ColumnProvider initialState={defaultState}>
       <Board />
     </ColumnProvider>
   );
