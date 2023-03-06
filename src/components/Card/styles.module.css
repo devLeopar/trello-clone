@@ -1,10 +1,76 @@
 .card {
-    background-color: #fff;
-    border-radius: 3px;
-    box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
-    cursor: pointer;
-    margin-bottom: 8px;
-    max-width: 300px;
-    min-height: 20px;
-    padding: 8px;
-  }
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+  cursor: pointer;
+  margin-bottom: 8px;
+  max-width: 300px;
+  min-height: 20px;
+  padding: 8px;
+}
+
+.editPaneWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.titleInput {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 16px;
+  margin-right: 8px;
+  margin-bottom: 10px;
+}
+
+.descriptionInput {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.editPaneButtons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.saveButton {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.cancelButton {
+  background-color: #f44336;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.editButton {
+  color: green;
+  cursor: pointer;
+  font-style: italic;
+}
+
+.deleteButton {
+  color: red;
+  margin-left: 10px;
+  cursor: pointer;
+  font-style: italic;
+}

@@ -120,12 +120,20 @@ const Column: React.FC<ColumnProps> = ({ column, onDelete, onEdit }) => {
                   title={card.title}
                   description={card.description}
                   columnId={column.id}
-                  // onEdit={(editedColumn) =>
-                  //   dispatch({ type: "EDIT_COLUMN", payload: editedColumn })
-                  // }
-                  // onDelete={(columnId) =>
-                  //   dispatch({ type: "DELETE_COLUMN", payload: columnId })
-                  // }
+                  cardId={card.id}
+                  onEdit={(editedCard) =>
+                    dispatch({
+                      type: "EDIT_CARD",
+                      payload: {
+                        id: card.id,
+                        columnId: column.id,
+                        ...editedCard,
+                      },
+                    })
+                  }
+                  onDelete={(cardId) =>
+                    dispatch({ type: "DELETE_CARD", payload: cardId })
+                  }
                 />
               ))}
             {state.showAddCardForm.columnId === column.id &&

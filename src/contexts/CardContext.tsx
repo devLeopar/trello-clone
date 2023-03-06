@@ -12,6 +12,7 @@ type CardState = {
 type CardAction =
   | { type: "ADD_CARD"; payload: Card }
   | { type: "DELETE_CARD"; payload: string }
+  | { type: "EDIT_CARD"; payload: Card }
   | { type: "DRAG_CARD"; payload: { source: string; destination: string } }
   | { type: "SHOW_ADD_CARD_FORM"; payload: { visible: boolean; columnId?: string } };
 
@@ -45,6 +46,14 @@ const cardReducer = (state: CardState, action: CardAction) => {
       return {
         ...state,
         cards: state.cards.filter((card) => card.id !== id),
+      };
+    }
+    case "EDIT_CARD": {
+      return {
+        ...state,
+        cards: state.cards.map((card) =>
+          card.id === action.payload.id ? action.payload : card
+        ),
       };
     }
     case "DRAG_CARD": {
