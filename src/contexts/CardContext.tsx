@@ -1,112 +1,87 @@
 import React, { createContext, useReducer } from "react";
 import { Card } from "../types";
 
-export type CardAction =
-  | { type: "ADD_CARD"; payload: { card: Card; columnId: string } }
-  | {
-      type: "DRAG_CARD";
-      payload: {
-        cardId: string;
-        sourceColumnId: string;
-        destinationColumnId: string;
-      };
-    }
-  | { type: "EDIT_CARD"; payload: { card: Card; columnId: string } }
-  | { type: "DELETE_CARD"; payload: { cardId: string; columnId: string } };
-
-export type CardState = {
-  [columnId: string]: Card[];
+type CardState = {
+  cards: Card[];
+  showAddCardForm: {
+    visible: boolean;
+    columnId?: string;
+  };
 };
 
-export type CardContextValue = {
+type CardAction =
+  | { type: "ADD_CARD"; payload: Card }
+  | { type: "DELETE_CARD"; payload: string }
+  | { type: "DRAG_CARD"; payload: { source: string; destination: string } }
+  | { type: "SHOW_ADD_CARD_FORM"; payload: { visible: boolean; columnId?: string } };
+
+type CardContextValue = {
   state: CardState;
   dispatch: React.Dispatch<CardAction>;
 };
 
-export const defaultState: CardState = {};
+export const defaultState = {
+  cards: [],
+  showAddCardForm: {
+    visible: false,
+  },
+};
 
 export const CardContext = createContext<CardContextValue | undefined>(
   undefined
 );
 
-export const cardReducer = (
-  state: CardState,
-  action: CardAction
-): CardState => {
+const cardReducer = (state: CardState, action: CardAction) => {
   switch (action.type) {
     case "ADD_CARD": {
-      const { card, columnId } = action.payload;
+      const { payload: card } = action;
       return {
         ...state,
-        [columnId]: [...(state[columnId] || []), card],
-      };
-    }
-    case "DRAG_CARD": {
-      const { cardId, sourceColumnId, destinationColumnId } = action.payload;
-      const sourceCards = state[sourceColumnId];
-      const destinationCards = state[destinationColumnId];
-      const cardIndex = sourceCards.findIndex((card) => card.id === cardId);
-      const card = sourceCards[cardIndex];
-      const newSourceCards = [
-        ...sourceCards.slice(0, cardIndex),
-        ...sourceCards.slice(cardIndex + 1),
-      ];
-      const newDestinationCards = destinationCards
-        ? [...destinationCards, card]
-        : [card];
-      return {
-        ...state,
-        [sourceColumnId]: newSourceCards,
-        [destinationColumnId]: newDestinationCards,
-      };
-    }
-    case "EDIT_CARD": {
-      const { card, columnId } = action.payload;
-      const cards = state[columnId] || [];
-      const cardIndex = cards.findIndex((c) => c.id === card.id);
-      if (cardIndex === -1) {
-        throw new Error(
-          `Card with id ${card.id} not found in column ${columnId}`
-        );
-      }
-      const newCards = [
-        ...cards.slice(0, cardIndex),
-        card,
-        ...cards.slice(cardIndex + 1),
-      ];
-      return {
-        ...state,
-        [columnId]: newCards,
+        cards: [...state.cards, card],
       };
     }
     case "DELETE_CARD": {
-      const { cardId, columnId } = action.payload;
-      const cards = state[columnId] || [];
-      const cardIndex = cards.findIndex((card) => card.id === cardId);
-      if (cardIndex === -1) {
-        throw new Error(
-          `Card with id ${cardId} not found in column ${columnId}`
-        );
-      }
-      const newCards = [
-        ...cards.slice(0, cardIndex),
-        ...cards.slice(cardIndex + 1),
-      ];
+      const { payload: id } = action;
       return {
         ...state,
-        [columnId]: newCards,
+        cards: state.cards.filter((card) => card.id !== id),
       };
     }
-    default:
+    case "DRAG_CARD": {
+      const { source, destination } = action.payload;
+      const sourceIndex = state.cards.findIndex((card) => card.id === source);
+      const destinationIndex = state.cards.findIndex(
+        (card) => card.id === destination
+      );
+      const [card] = state.cards.splice(sourceIndex, 1);
+      state.cards.splice(destinationIndex, 0, card);
+      return {
+        ...state,
+        cards: [...state.cards],
+      };
+    }
+    case "SHOW_ADD_CARD_FORM": {
+      const { visible, columnId } = action.payload;
+      return {
+        ...state,
+        showAddCardForm: {
+          visible,
+          columnId,
+        },
+      };
+    }
+    default: {
       return state;
+    }
   }
 };
 
 const CardProvider: React.FC<{
   children: React.ReactNode;
-  initialState: CardState;
+  initialState: any;
 }> = ({ children, initialState }) => {
   const [state, dispatch] = useReducer(cardReducer, initialState);
+
   return (
     <CardContext.Provider value={{ state, dispatch }}>
       {children}
@@ -118,7 +93,7 @@ const useCardContext = (): CardContextValue => {
   const context = React.useContext(CardContext);
 
   if (!context) {
-    throw new Error("useCardContext must be used within a CardProvider");
+    throw new Error("useColumnContext must be used within a ColumnProvider");
   }
 
   return context;

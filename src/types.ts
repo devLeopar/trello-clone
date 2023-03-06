@@ -1,5 +1,6 @@
 export type Card = {
   id: string;
+  columnId: string;
   title: string;
   description: string;
 };

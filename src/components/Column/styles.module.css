@@ -74,3 +74,46 @@
   gap: 16px;
   width: 100%;
 }
+.addCardForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  padding: 24px;
+  margin-top: 5px;
+  margin-right: 5px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+.addCardFormInput {
+  margin-bottom: 12px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 16px;
+  width: 100%;
+}
+.addCardFormBtnWrapper {
+  display:flex;
+  gap:2rem;
+}
+.addCardFormSubmitBtn {
+  padding: 8px;
+  background-color: #5aac44;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+}
+.addCardFormCancelBtn {
+  padding: 8px;
+  background-color: #eb5a46;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+}

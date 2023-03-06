@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import Card from "../Card";
 import { ColumnData } from "../../types";
 import styles from "./styles.module.css";
+import { useCardContext } from "../../contexts/CardContext";
+import AddCardForm from "./AddCardForm";
+import AddCardButton from "./AddCardButton";
 
 type ColumnProps = {
   column: ColumnData;
@@ -10,8 +13,38 @@ type ColumnProps = {
 };
 
 const Column: React.FC<ColumnProps> = ({ column, onDelete, onEdit }) => {
+  const { state, dispatch } = useCardContext();
+
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [title, setTitle] = useState<string>(column.title);
+
+  const handleAddCard = (title: string, description: string) => {
+    if (title.trim() === "") {
+      // If the title is empty, do nothing
+      return;
+    }
+
+    dispatch({
+      type: "ADD_CARD",
+      payload: {
+        id: Date.now().toString(),
+        columnId: column.id,
+        title,
+        description,
+      },
+    });
+    dispatch({
+      type: "SHOW_ADD_CARD_FORM",
+      payload: { visible: false, columnId: column.id },
+    });
+  };
+
+  const handleClose = () => {
+    dispatch({
+      type: "SHOW_ADD_CARD_FORM",
+      payload: { visible: false, columnId: column.id },
+    });
+  };
 
   const handleDelete = () => {
     onDelete(column.id);
@@ -79,11 +112,30 @@ const Column: React.FC<ColumnProps> = ({ column, onDelete, onEdit }) => {
             </div>
           </div>
           <div className={styles.cardList}>
-            <Card title="Default Card" description="This is a default card." />
-            <Card
-              title="Default Card 2"
-              description="This is a default card 2."
-            />
+            {state.cards
+              .filter((card) => card.columnId === column.id)
+              .map((card) => (
+                <Card
+                  key={card.id}
+                  title={card.title}
+                  description={card.description}
+                  columnId={column.id}
+                  // onEdit={(editedColumn) =>
+                  //   dispatch({ type: "EDIT_COLUMN", payload: editedColumn })
+                  // }
+                  // onDelete={(columnId) =>
+                  //   dispatch({ type: "DELETE_COLUMN", payload: columnId })
+                  // }
+                />
+              ))}
+            {state.showAddCardForm.columnId === column.id &&
+            state.showAddCardForm.visible ? (
+              <AddCardForm onSubmit={handleAddCard} onClose={handleClose} />
+            ) : (
+              <div className={styles.addColumnButtonWrapper}>
+                <AddCardButton columnId={column.id} />
+              </div>
+            )}
           </div>
         </>
       )}
