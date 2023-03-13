@@ -1,8 +1,14 @@
 import React from "react";
 import "@testing-library/jest-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { ColumnProvider } from "../contexts/ColumnContext";
+import {
+  ColumnProvider
+} from "../contexts/ColumnContext";
 import Board from "../components/Board";
+import {
+  CardProvider,
+  defaultState as cardDefaultState,
+} from "../contexts/CardContext";
 
 describe("Board component", () => {
   const initialTestState = {
@@ -16,7 +22,9 @@ describe("Board component", () => {
   test("renders board component with column", () => {
     render(
       <ColumnProvider initialState={initialTestState}>
-        <Board />
+        <CardProvider initialState={cardDefaultState}>
+          <Board />
+        </CardProvider>
       </ColumnProvider>
     );
 
@@ -27,7 +35,9 @@ describe("Board component", () => {
   test("adds a new column", () => {
     render(
       <ColumnProvider initialState={initialTestState}>
-        <Board />
+        <CardProvider initialState={cardDefaultState}>
+          <Board />
+        </CardProvider>
       </ColumnProvider>
     );
 
@@ -58,7 +68,9 @@ describe("Board component", () => {
   test("does not add a new column with empty title", () => {
     render(
       <ColumnProvider initialState={initialTestState}>
-        <Board />
+        <CardProvider initialState={cardDefaultState}>
+          <Board />
+        </CardProvider>
       </ColumnProvider>
     );
 
@@ -79,7 +91,9 @@ describe("Board component", () => {
   test("deletes a column", () => {
     render(
       <ColumnProvider initialState={initialTestState}>
-        <Board />
+        <CardProvider initialState={cardDefaultState}>
+          <Board />
+        </CardProvider>
       </ColumnProvider>
     );
 
@@ -93,7 +107,9 @@ describe("Board component", () => {
   test("edits a column", () => {
     render(
       <ColumnProvider initialState={initialTestState}>
-        <Board />
+        <CardProvider initialState={cardDefaultState}>
+          <Board />
+        </CardProvider>
       </ColumnProvider>
     );
 

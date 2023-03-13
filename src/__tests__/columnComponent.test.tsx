@@ -1,47 +1,70 @@
 import React from "react";
 import "@testing-library/jest-dom";
 import { render, fireEvent, screen } from "@testing-library/react";
-import { ColumnData } from "../types";
-import Column from "../components/Column";
-
-const column: ColumnData = {
-  id: "1",
-  title: "Column 1",
-};
-
-const onDelete = jest.fn();
-const onEdit = jest.fn();
+import { ColumnProvider } from "../contexts/ColumnContext";
+import {
+  CardProvider,
+  defaultState as cardDefaultState,
+} from "../contexts/CardContext";
+import Board from "../components/Board";
 
 describe("<Column />", () => {
-  beforeEach(() => {
-    onDelete.mockClear();
-    onEdit.mockClear();
-  });
+  const initialTestState = {
+    columns: [
+      { id: "1", title: "Column 1" },
+      { id: "2", title: "Column 2" },
+    ],
+    showAddColumnForm: false,
+  };
 
   test("renders column component with title and buttons", () => {
-    render(<Column column={column} onDelete={onDelete} onEdit={onEdit} />);
+    render(
+      <ColumnProvider initialState={initialTestState}>
+        <CardProvider initialState={cardDefaultState}>
+          <Board />
+        </CardProvider>
+      </ColumnProvider>
+    );
     expect(screen.getByText("Column 1")).toBeInTheDocument();
     expect(screen.getByTestId("edit-button-1")).toBeInTheDocument();
     expect(screen.getByTestId("delete-button-1")).toBeInTheDocument();
   });
 
-  test("clicking delete button calls onDelete prop with column id", () => {
-    render(<Column column={column} onDelete={onDelete} onEdit={onEdit} />);
+  test("clicking delete button deletes corresponding column", () => {
+    render(
+      <ColumnProvider initialState={initialTestState}>
+        <CardProvider initialState={cardDefaultState}>
+          <Board />
+        </CardProvider>
+      </ColumnProvider>
+    );
     const deleteButton = screen.getByTestId("delete-button-1");
     fireEvent.click(deleteButton);
-    expect(onDelete).toHaveBeenCalledWith("1");
+    expect(screen.queryByText("Column 1")).not.toBeInTheDocument();
   });
 
   test("clicking edit button changes title to input field", () => {
-    render(<Column column={column} onDelete={onDelete} onEdit={onEdit} />);
+    render(
+      <ColumnProvider initialState={initialTestState}>
+        <CardProvider initialState={cardDefaultState}>
+          <Board />
+        </CardProvider>
+      </ColumnProvider>
+    );
     const editButton = screen.getByTestId("edit-button-1");
     fireEvent.click(editButton);
     expect(screen.getByTestId(/editInput-1/)).toBeInTheDocument();
     expect(screen.getByText(/Save/)).toBeInTheDocument();
   });
 
-  test("clicking save button calls onEdit prop with new column title", () => {
-    render(<Column column={column} onDelete={onDelete} onEdit={onEdit} />);
+  test("clicking save button save corresponding column title", () => {
+    render(
+      <ColumnProvider initialState={initialTestState}>
+        <CardProvider initialState={cardDefaultState}>
+          <Board />
+        </CardProvider>
+      </ColumnProvider>
+    );
     debugger;
     const editButton = screen.getByTestId("edit-button-1");
     fireEvent.click(editButton);
@@ -49,14 +72,17 @@ describe("<Column />", () => {
     fireEvent.change(input, { target: { value: "Edited Column" } });
     const saveButton = screen.getByText("Save");
     fireEvent.click(saveButton);
-    expect(onEdit).toHaveBeenCalledWith({
-      id: "1",
-      title: "Edited Column",
-    });
+    expect(screen.getByText("Edited Column")).toBeInTheDocument();
   });
 
   test("clicking cancel button restores original column title", () => {
-    render(<Column column={column} onDelete={onDelete} onEdit={onEdit} />);
+    render(
+      <ColumnProvider initialState={initialTestState}>
+        <CardProvider initialState={cardDefaultState}>
+          <Board />
+        </CardProvider>
+      </ColumnProvider>
+    );
     const editButton = screen.getByTestId("edit-button-1");
     fireEvent.click(editButton);
     const input = screen.getByTestId("editInput-1");
